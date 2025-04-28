@@ -39,7 +39,14 @@ func main() {
 	config.ConnectDB()
 
 	// Create the User table in our database if it doesn't exist
-	config.DB.AutoMigrate(&models.User{})
+	if err := config.DB.AutoMigrate(&models.User{}); err != nil {
+		log.Fatalf("User migration failed: %v", err)
+	}
+
+	// Create the Post table in our database if it doesn't exist
+	if err := config.DB.AutoMigrate(&models.Post{}); err != nil {
+		log.Fatalf("Post migration failed: %v", err)
+	}
 
 	// Set up all our API routes (like login, register, etc.)
 	routes.SetupRoutes(router)

@@ -19,5 +19,15 @@ func SetupRoutes(router *gin.Engine) {
 		v1.POST("/login", controllers.Login)
 		v1.GET("/dashboard", middleware.AuthMiddleware(), controllers.Dashboard)
 		v1.GET("/users", middleware.AuthMiddleware(), controllers.ListUsers)
+
+		// Group all post routes and apply AuthMiddleware once
+		postRoutes := v1.Group("/posts", middleware.AuthMiddleware())
+		{
+			postRoutes.GET("", controllers.ListPosts)
+			postRoutes.POST("", controllers.CreatePost)
+			postRoutes.GET("/:id", controllers.GetPost)
+			postRoutes.PUT("/:id", controllers.UpdatePost)
+			postRoutes.DELETE("/:id", controllers.DeletePost)
+		}
 	}
 }

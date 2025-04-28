@@ -1,6 +1,6 @@
 # Go Gin Authentication API
 
-A secure authentication API built with Go, Gin, and PostgreSQL. This project implements user registration, login, JWT-based authentication, and user management.
+A secure authentication API built with Go, Gin, and PostgreSQL. This project implements user registration, login, JWT-based authentication, and CRUD operations for posts.
 
 ## Project Structure
 
@@ -15,25 +15,34 @@ go-gin-auth/
 │   └── config.go            # Database configuration
 ├── controllers/
 │   ├── auth_controller.go   # Authentication handlers
+│   ├── post_controller.go   # Post management handlers
 │   └── user_controller.go   # User management handlers
 ├── middleware/
 │   └── auth_middleware.go   # JWT authentication middleware
 ├── models/
-│   └── user.go              # User data model
-├── pkg/
-│   └── seeder/
-│       └── seeder.go        # Database seeding logic
+│   ├── user.go              # User data model
+│   └── post.go              # Post data model
 ├── repositories/
-│   └── user_repository.go   # Database operations
-├── routes/
-│   └── routes.go            # API route definitions
+│   ├── user_repository.go   # User database operations
+│   └── post_repository.go   # Post database operations
 ├── services/
-│   └── auth_service.go      # Business logic
+│   ├── auth_service.go      # Authentication business logic
+│   └── post_service.go      # Post business logic
 ├── utils/
 │   ├── hash.go              # Password hashing
 │   └── token.go             # JWT token handling
 └── docker-compose.yml       # Docker configuration
 ```
+
+## Features
+
+- User Registration and Login
+- JWT-based Authentication
+- Protected Routes with Middleware
+- CRUD Operations for Posts
+- Password Hashing
+- Database Seeding
+- Docker Support
 
 ## Code Flow
 
@@ -49,6 +58,11 @@ go-gin-auth/
      - POST `/api/v1/login` - Authenticate user
      - GET `/api/v1/dashboard` - Protected dashboard
      - GET `/api/v1/users` - List all users (protected)
+     - GET `/api/v1/posts` - List all posts (protected)
+     - POST `/api/v1/posts` - Create new post (protected)
+     - GET `/api/v1/posts/:id` - Get post by ID (protected)
+     - PUT `/api/v1/posts/:id` - Update post (protected)
+     - DELETE `/api/v1/posts/:id` - Delete post (protected)
 
 3. **Middleware** (`middleware/auth_middleware.go`)
    - Validates JWT tokens
@@ -59,19 +73,24 @@ go-gin-auth/
 4. **Controllers** (`controllers/`)
    - `auth_controller.go`: Handles registration and login
    - `user_controller.go`: Handles user listing and management
+   - `post_controller.go`: Handles post CRUD operations
 
-5. **Services** (`services/auth_service.go`)
-   - Contains business logic
+5. **Services** (`services/`)
+   - `auth_service.go`: Authentication business logic
+   - `post_service.go`: Post business logic
    - Handles password hashing
    - Manages JWT token generation
    - Calls repository layer
 
-6. **Repositories** (`repositories/user_repository.go`)
-   - Interacts with database
+6. **Repositories** (`repositories/`)
+   - `user_repository.go`: User database operations
+   - `post_repository.go`: Post database operations
    - Performs CRUD operations
    - Handles data persistence
 
-7. **Models** (`models/user.go`)
+7. **Models** (`models/`)
+   - `user.go`: User data model
+   - `post.go`: Post data model
    - Defines data structures
    - Maps to database tables
    - Contains validation rules
@@ -79,11 +98,6 @@ go-gin-auth/
 8. **Utils**
    - `hash.go`: Securely hashes passwords
    - `token.go`: Generates and validates JWT tokens
-
-9. **Seeder** (`pkg/seeder/seeder.go`)
-   - Creates initial users
-   - Handles database seeding
-   - Supports force reseeding
 
 ## Authentication Flow
 
@@ -117,24 +131,167 @@ go-gin-auth/
    - If valid, request proceeds to controller
    - If invalid, 401 Unauthorized is returned
 
-## Database Seeding
+## API Endpoints
 
-The project includes a seeder to create initial users. To use it:
+### Authentication
 
-1. **Normal Seeding** (only if no users exist):
-   ```bash
-   go run cmd/seeder/main.go
-   ```
+#### Register
+```bash
+curl -X POST http://localhost:8080/api/v1/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "testuser",
+    "email": "test@example.com",
+    "password": "password123"
+  }'
+```
 
-2. **Force Reseeding** (deletes all users and creates new ones):
-   ```bash
-   go run cmd/seeder/main.go -force
-   ```
+**Request Body:**
+```json
+{
+  "username": "testuser",
+  "email": "test@example.com",
+  "password": "password123"
+}
+```
 
-The seeder creates these default users:
-- Username: `admin`, Email: `admin@example.com`, Password: `admin123`
-- Username: `user1`, Email: `user1@example.com`, Password: `user123`
-- Username: `user2`, Email: `user2@example.com`, Password: `user123`
+#### Login
+```bash
+curl -X POST http://localhost:8080/api/v1/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "test@example.com",
+    "password": "password123"
+  }'
+```
+
+**Request Body:**
+```json
+{
+  "email": "test@example.com",
+  "password": "password123"
+}
+```
+
+### Posts (All endpoints require authentication)
+
+#### List Posts
+```bash
+curl -X GET http://localhost:8080/api/v1/posts \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+```
+
+**Response:**
+```json
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "First Post",
+      "content": "Content of first post",
+      "created_at": "2024-01-01 12:00:00"
+    }
+  ]
+}
+```
+
+#### Create Post
+```bash
+curl -X POST http://localhost:8080/api/v1/posts \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "My First Post",
+    "content": "This is the content of my first post"
+  }'
+```
+
+**Request Body:**
+```json
+{
+  "title": "My First Post",
+  "content": "This is the content of my first post"
+}
+```
+
+#### Get Post by ID
+```bash
+curl -X GET http://localhost:8080/api/v1/posts/1 \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+```
+
+**Response:**
+```json
+{
+  "post": {
+    "id": 1,
+    "title": "First Post",
+    "content": "Content of first post",
+    "created_at": "2024-01-01 12:00:00"
+  }
+}
+```
+
+#### Update Post
+```bash
+curl -X PUT http://localhost:8080/api/v1/posts/1 \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Updated Title",
+    "content": "Updated content"
+  }'
+```
+
+**Request Body:**
+```json
+{
+  "title": "Updated Title",
+  "content": "Updated content"
+}
+```
+
+#### Delete Post
+```bash
+curl -X DELETE http://localhost:8080/api/v1/posts/1 \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+```
+
+### Users (Protected)
+
+#### List Users
+```bash
+curl -X GET http://localhost:8080/api/v1/users \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+```
+
+**Response:**
+```json
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "email": "admin@example.com",
+      "created_at": "2024-01-01 12:00:00"
+    }
+  ]
+}
+```
+
+#### Dashboard
+```bash
+curl -X GET http://localhost:8080/api/v1/dashboard \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+```
+
+**Response:**
+```json
+{
+  "message": "Welcome to your dashboard!",
+  "username": "your_username"
+}
+```
 
 ## Setup Instructions
 
@@ -164,81 +321,30 @@ The seeder creates these default users:
    go run cmd/server/main.go
    ```
 
-## API Endpoints
+5. **Seed the Database (Optional)**
+   ```bash
+   # Normal seeding (only if no users exist)
+   go run cmd/seeder/main.go
 
-### Register
-- **URL**: `/api/v1/register`
-- **Method**: `POST`
-- **Body**:
-  ```json
-  {
-    "username": "testuser",
-    "email": "test@example.com",
-    "password": "password123"
-  }
-  ```
+   # Force reseeding (deletes all users and creates new ones)
+   go run cmd/seeder/main.go -force
+   ```
 
-### Login
-- **URL**: `/api/v1/login`
-- **Method**: `POST`
-- **Body**:
-  ```json
-  {
-    "email": "test@example.com",
-    "password": "password123"
-  }
-  ```
+## Default Users
 
-### Dashboard
-- **URL**: `/api/v1/dashboard`
-- **Method**: `GET`
-- **Headers**:
-  ```
-  Authorization: Bearer <your_jwt_token>
-  ```
-- **Response**:
-  ```json
-  {
-    "message": "Welcome to your dashboard!",
-    "username": "your_username"
-  }
-  ```
-
-### List Users
-- **URL**: `/api/v1/users`
-- **Method**: `GET`
-- **Headers**:
-  ```
-  Authorization: Bearer <your_jwt_token>
-  ```
-- **Response**:
-  ```json
-  {
-    "users": [
-      {
-        "id": 1,
-        "username": "admin",
-        "email": "admin@example.com",
-        "created_at": "2024-01-01 12:00:00"
-      },
-      {
-        "id": 2,
-        "username": "user1",
-        "email": "user1@example.com",
-        "created_at": "2024-01-01 12:00:00"
-      }
-    ]
-  }
-  ```
+The seeder creates these default users:
+- Username: `admin`, Email: `admin@example.com`, Password: `admin123`
+- Username: `user1`, Email: `user1@example.com`, Password: `user123`
+- Username: `user2`, Email: `user2@example.com`, Password: `user123`
 
 ## Security Features
 
 - Password hashing using bcrypt
 - JWT token authentication with middleware
+- Protected routes with middleware
 - Secure database configuration
 - Environment variable management
 - Input validation
-- Protected routes with middleware
 - Password hash exclusion from responses
 
 ## Dependencies
