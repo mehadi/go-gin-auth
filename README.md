@@ -5,7 +5,7 @@ A secure authentication API built with Go, Gin, and PostgreSQL. This project imp
 ## Project Structure
 
 ```
-go-gin-auth/
+go-gin-auth-api-starter-kit/
 ├── cmd/
 │   ├── server/
 │   │   └── main.go          # Application entry point

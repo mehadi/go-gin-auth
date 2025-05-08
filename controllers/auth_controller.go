@@ -3,9 +3,9 @@ package controllers
 
 // Import necessary packages
 import (
-	"go-gin-auth/models"   // Our data models
-	"go-gin-auth/services" // Our business logic
-	"net/http"             // For HTTP status codes
+	"go-gin-auth-api-starter-kit/models"   // Our data models
+	"go-gin-auth-api-starter-kit/services" // Our business logic
+	"net/http"                             // For HTTP status codes
 
 	"github.com/gin-gonic/gin" // Web framework
 )

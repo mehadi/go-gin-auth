@@ -2,8 +2,8 @@ package main
 
 import (
 	"flag"
-	"go-gin-auth/config"
-	"go-gin-auth/pkg/seeder"
+	"go-gin-auth-api-starter-kit/config"
+	"go-gin-auth-api-starter-kit/pkg/seeder"
 	"log"
 )
 

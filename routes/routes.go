@@ -3,8 +3,8 @@ package routes
 
 // Import necessary packages
 import (
-	"go-gin-auth/controllers" // Our route handlers
-	"go-gin-auth/middleware"  // Our middleware
+	"go-gin-auth-api-starter-kit/controllers" // Our route handlers
+	"go-gin-auth-api-starter-kit/middleware"  // Our middleware
 
 	"github.com/gin-gonic/gin" // Web framework
 )

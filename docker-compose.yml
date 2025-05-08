@@ -1,16 +1,40 @@
 services:
-  db:
-    container_name: gin_auth_db
-    image: postgres:latest
-    restart: always
+  app:
+    container_name: ${APP_NAME}
+    build: .
     ports:
-      - '5440:5432'
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=postgres
+      - ${EXPOSE_PORT}:${PORT}
+    restart: on-failure
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - ./:/app/
+    depends_on:
+      - postgres
+    env_file:
+      - .env
+    environment:
+      WAIT_HOSTS: ${DB_HOST}:${DB_PORT}
+      WAIT_BEFORE_HOSTS: 5
+      WAIT_SLEEP_INTERVAL: 3
+    networks:
+      - go-gin-auth-api-starter-kit-stack
+
+  postgres:
+    container_name: ${DB_SERVER_NAME}
+    image: postgres:15-alpine
+    ports:
+      - ${DB_EXPOSE_PORT}:${DB_PORT}
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - database_postgres:/var/lib/postgresql/data
+    networks:
+      - go-gin-auth-api-starter-kit-stack
 
 volumes:
-  db_data:
+  database_postgres:
+
+networks:
+  go-gin-auth-api-starter-kit-stack:
+    driver: bridge

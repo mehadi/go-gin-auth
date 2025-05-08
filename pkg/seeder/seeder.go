@@ -1,9 +1,9 @@
 package seeder
 
 import (
-	"go-gin-auth/config"
-	"go-gin-auth/models"
-	"go-gin-auth/utils"
+	"go-gin-auth-api-starter-kit/config"
+	"go-gin-auth-api-starter-kit/models"
+	"go-gin-auth-api-starter-kit/utils"
 	"log"
 )
 

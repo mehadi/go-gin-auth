@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"go-gin-auth/config"
-	"go-gin-auth/models"
+	"go-gin-auth-api-starter-kit/config"
+	"go-gin-auth-api-starter-kit/models"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

@@ -1,9 +1,9 @@
 package controllers
 
 import (
-	"go-gin-auth/config"
-	"go-gin-auth/models"
-	"go-gin-auth/services"
+	"go-gin-auth-api-starter-kit/config"
+	"go-gin-auth-api-starter-kit/models"
+	"go-gin-auth-api-starter-kit/services"
 	"net/http"
 	"strconv"
 

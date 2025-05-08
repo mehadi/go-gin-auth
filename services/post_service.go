@@ -1,8 +1,8 @@
 package services
 
 import (
-	"go-gin-auth/models"
-	"go-gin-auth/repositories"
+	"go-gin-auth-api-starter-kit/models"
+	"go-gin-auth-api-starter-kit/repositories"
 )
 
 // CreatePost handles business logic for creating a post

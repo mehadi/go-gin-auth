@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"go-gin-auth/utils"
+	"go-gin-auth-api-starter-kit/utils"
 	"net/http"
 	"strings"
 

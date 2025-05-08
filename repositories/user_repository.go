@@ -3,8 +3,8 @@ package repositories
 
 // Import necessary packages
 import (
-	"go-gin-auth/config" // Database configuration
-	"go-gin-auth/models" // User model
+	"go-gin-auth-api-starter-kit/config" // Database configuration
+	"go-gin-auth-api-starter-kit/models" // User model
 )
 
 // CreateUser saves a new user to the database

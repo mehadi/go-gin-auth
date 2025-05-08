@@ -1,8 +1,8 @@
 package repositories
 
 import (
-	"go-gin-auth/config"
-	"go-gin-auth/models"
+	"go-gin-auth-api-starter-kit/config"
+	"go-gin-auth-api-starter-kit/models"
 )
 
 // CreatePost saves a new post to the database

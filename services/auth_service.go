@@ -3,9 +3,9 @@ package services
 
 // Import necessary packages
 import (
-	"go-gin-auth/models"        // Our data models
-	"go-gin-auth/repositories"  // For database operations
-	"go-gin-auth/utils"         // For helper functions
+	"go-gin-auth-api-starter-kit/models"       // Our data models
+	"go-gin-auth-api-starter-kit/repositories" // For database operations
+	"go-gin-auth-api-starter-kit/utils"        // For helper functions
 )
 
 // Register creates a new user account

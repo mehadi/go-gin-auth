@@ -3,10 +3,10 @@ package main
 
 // Import necessary packages
 import (
-	"go-gin-auth/config" // Our database configuration
-	"go-gin-auth/models" // Our data models (like User)
-	"go-gin-auth/routes" // Our API routes
-	"log"                // For logging errors
+	"go-gin-auth-api-starter-kit/config" // Our database configuration
+	"go-gin-auth-api-starter-kit/models" // Our data models (like User)
+	"go-gin-auth-api-starter-kit/routes" // Our API routes
+	"log"                                // For logging errors
 
 	"github.com/gin-gonic/gin" // Web framework for Go
 	"github.com/joho/godotenv" // For loading environment variables
@@ -31,7 +31,7 @@ func main() {
 	// When someone visits the homepage ("/"), we send a welcome message
 	router.GET("/", func(c *gin.Context) {
 		c.JSON(200, gin.H{
-			"message": "Go Gin Auth! Server Working!",
+			"message": "Go Gin Auth! Server Working AIR Hot Reload!",
 		})
 	})
 
