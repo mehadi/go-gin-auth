@@ -43,6 +43,7 @@ go-gin-auth-api-starter-kit/
 - Password Hashing
 - Database Seeding
 - Docker Support
+- Hot Reload with Go Air
 
 ## Code Flow
 
@@ -130,6 +131,22 @@ go-gin-auth-api-starter-kit/
    - Middleware validates token
    - If valid, request proceeds to controller
    - If invalid, 401 Unauthorized is returned
+
+## Development Tools
+
+### Go Air
+This project uses Go Air for hot reloading during development. Air automatically restarts the server when code changes are detected, making development faster and more efficient.
+
+To start the development server with hot reload:
+```bash
+go run github.com/cosmtrek/air
+```
+
+Air will:
+- Watch for changes in your Go files
+- Automatically restart the server
+- Preserve state between restarts
+- Show detailed logs of changes and restarts
 
 ## API Endpoints
 
@@ -303,12 +320,27 @@ curl -X GET http://localhost:8080/api/v1/dashboard \
 2. **Environment Variables**
    Create a `.env` file with:
    ```
-   DB_HOST=localhost
+   # Application settings
+   APP_NAME=go-gin-auth-api-starter-kit
+   GIN_MODE=debug
+   HOST=localhost
+   PORT=8080
+   EXPOSE_PORT=8080
+   
+   # DB Server Settings
+   DB_SERVER_NAME=go-gin-auth-api-starter-kit-db
+   DB_HOST=postgres
    DB_PORT=5432
+   WAIT_HOSTS=postgres:5432
+   DB_EXPOSE_PORT=5432
    DB_USER=postgres
-   DB_PASSWORD=your_password
-   DB_NAME=auth_db
-   JWT_SECRET=your_jwt_secret
+   DB_PASSWORD=postgres
+   DB_NAME=postgres
+   JWT_SECRET=your_secret_key
+   
+   # Docker settings
+   COMPOSE_USER_ID=
+   COMPOSE_GROUP_ID=
    ```
 
 3. **Database Setup**
